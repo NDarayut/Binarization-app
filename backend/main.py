@@ -4,6 +4,7 @@ from fastapi.responses import Response
 import cv2
 import numpy as np
 from src.binary_thresholding import binary
+from src.otsu import otsu
 
 app = FastAPI()
 
@@ -32,7 +33,7 @@ async def binarize_image(
     # Process the image using the chosen binarization method
     if method == "otsu":
         # Otsu's method ignores the provided threshold value.
-        _, binarized = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        binarized = otsu(img)
     elif method == "adaptive":
         binarized = cv2.adaptiveThreshold(
             img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2
